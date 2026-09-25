@@ -1,10 +1,10 @@
-package com.MMRSheikh.question_service;
+package com.mmrsheikh.producer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class QuestionServiceApplicationTests {
+class ProducerApplicationTests {
 
 	@Test
 	void contextLoads() {
