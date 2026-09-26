@@ -24,7 +24,7 @@ public class ProductService {
     public Product getOrder(Order order) {
 
         if (processedOrderRepository.existsById(order.getOrderId())) {
-            throw null;
+            return null;
         }
 
         Product product = productRepository.findById(order.getProductId())
