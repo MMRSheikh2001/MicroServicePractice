@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,12 @@ public class OrderService {
     private final KafkaTemplate<String, Order> kafkaTemplate;
 
     public Order createOrder(Order order) {
-        kafkaTemplate.send("order-events", order.getOrderId().toString(), order);
+        try {
+            kafkaTemplate.send("order-events", order.getOrderId().toString(), order)
+                    .get(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to publish order event" + e.getMessage());
+        }
 
         return orderRepository.save(order);
 
