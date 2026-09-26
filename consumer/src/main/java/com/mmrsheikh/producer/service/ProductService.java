@@ -24,7 +24,7 @@ public class ProductService {
     public Product getOrder(Order order) {
 
         if (processedOrderRepository.existsById(order.getOrderId())) {
-            throw new RuntimeException("Order already processed");
+            throw null;
         }
 
         Product product = productRepository.findById(order.getProductId())
