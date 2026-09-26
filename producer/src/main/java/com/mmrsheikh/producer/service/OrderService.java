@@ -17,7 +17,7 @@ public class OrderService {
     private final KafkaTemplate<String, Order> kafkaTemplate;
 
     public Order createOrder(Order order) {
-        kafkaTemplate.send("mmrsheikh", "order", order);
+        kafkaTemplate.send("order-events", "order", order);
 
         return orderRepository.save(order);
 

@@ -15,7 +15,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
 
-    @KafkaListener(topics = "mmrsheikh", groupId = "mahbub-group")
+    @KafkaListener(topics = "order-events", groupId = "mahbub-group")
     public Product getOrder(Order order) {
 
         Product product = productRepository.findById(order.getProductId())
