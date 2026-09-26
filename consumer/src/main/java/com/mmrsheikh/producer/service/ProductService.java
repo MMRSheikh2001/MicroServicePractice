@@ -1,7 +1,9 @@
 package com.mmrsheikh.producer.service;
 
 import com.mmrsheikh.producer.models.Order;
+import com.mmrsheikh.producer.models.ProcessedOrder;
 import com.mmrsheikh.producer.models.Product;
+import com.mmrsheikh.producer.repository.ProcessedOrderRepository;
 import com.mmrsheikh.producer.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,15 +15,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProcessedOrderRepository processedOrderRepository;
 
 
     @KafkaListener(topics = "order-events", groupId = "mahbub-group")
     public Product getOrder(Order order) {
 
+        if (processedOrderRepository.existsById(order.getOrderId())) {
+            throw new RuntimeException("Order already processed");
+        }
+
         Product product = productRepository.findById(order.getProductId())
                 .orElseThrow(() -> new RuntimeException("No Product found"));
         if (product.getQuantity() != null && product.getQuantity() >= order.getQuantity()) {
             product.setQuantity(product.getQuantity() - order.getQuantity());
+            processedOrderRepository.save(new ProcessedOrder(order.getOrderId()));
         } else {
             throw new RuntimeException("Invalid Order");
         }
