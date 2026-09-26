@@ -8,6 +8,7 @@ import com.mmrsheikh.producer.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ProductService {
     private final ProcessedOrderRepository processedOrderRepository;
 
 
+    @Transactional
     @KafkaListener(topics = "order-events", groupId = "mahbub-group")
     public Product getOrder(Order order) {
 
