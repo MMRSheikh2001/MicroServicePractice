@@ -1,0 +1,13 @@
+
+E:
+
+cd E:\kafka_2.13-3.9.0\bin\windows   
+
+
+zookeeper-server-start.bat zookeeper.properties
+
+
+kafka-server-start.bat server.properties
+
+
+kafka-server-start.bat server2.properties
