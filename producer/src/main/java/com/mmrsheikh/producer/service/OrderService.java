@@ -18,14 +18,16 @@ public class OrderService {
     private final KafkaTemplate<String, Order> kafkaTemplate;
 
     public Order createOrder(Order order) {
+        Order savedOrder = orderRepository.save(order);
+
         try {
-            kafkaTemplate.send("order-events", order.getProductId().toString(), order)
+            kafkaTemplate.send("order-events", savedOrder.getProductId().toString(), savedOrder)
                     .get(10, TimeUnit.SECONDS);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to publish order event" + e.getMessage());
+            throw new RuntimeException("Failed to publish order event: " + e.getMessage(), e);
         }
 
-        return orderRepository.save(order);
+        return savedOrder;
 
     }
 
