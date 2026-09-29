@@ -19,7 +19,7 @@ public class OrderService {
 
     public Order createOrder(Order order) {
         try {
-            kafkaTemplate.send("order-events", order.getOrderId().toString(), order)
+            kafkaTemplate.send("order-events", order.getProductId().toString(), order)
                     .get(10, TimeUnit.SECONDS);
         } catch (Exception e) {
             throw new RuntimeException("Failed to publish order event" + e.getMessage());
