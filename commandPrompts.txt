@@ -11,3 +11,10 @@ kafka-server-start.bat server.properties
 
 
 kafka-server-start.bat server2.properties
+
+
+kafka-topics.bat --list --bootstrap-server localhost:9092
+
+kafka-topics.bat --create --topic order-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
+kafka-topics.bat --create --topic order-events.DLT --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
