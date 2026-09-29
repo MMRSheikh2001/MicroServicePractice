@@ -5,6 +5,20 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(),
-  tailwindcss()
+  tailwindcss(),
+
   ],
+
+  server: {
+    proxy: {
+      '/api/orders': {
+        target: 'http://localhost:8088',
+        changeOrigin: true,
+      },
+      '/api/products': {
+        target: 'http://localhost:8089',
+        changeOrigin: true,
+      },
+    },
+  },
 })
